@@ -2,11 +2,13 @@ import xml.etree.ElementTree as ET
 import ctypes
 from tkinter import filedialog
 
-racetree = ET.parse(filedialog.askopenfilename(filetypes=[("XML File", ".xml")], title="Select a RACE file"))
-raceroot = racetree.getroot()
 qualitree = ET.parse(filedialog.askopenfilename(filetypes=[("XML File", ".xml")], title="Select a QUALIFYING file"))
 qualiroot = qualitree.getroot()
+racetree = ET.parse(filedialog.askopenfilename(filetypes=[("XML File", ".xml")], title="Select a RACE file"))
+raceroot = racetree.getroot()
 top10 = {}
+
+
 for driver in qualiroot.iter('Driver'):
     name = driver.find('Name')
     bestlap = driver.find('BestLapTime')
@@ -21,7 +23,6 @@ for driver in qualiroot.iter('Driver'):
 
 for driver in raceroot.iter('Driver'):
     name = driver.find('Name')
-
     if name.text in top10:
         for lap in driver.findall('Lap'):
             if lap.get('num') != "1":
