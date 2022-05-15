@@ -1,13 +1,34 @@
 import xml.etree.ElementTree as ET
 import ctypes
+import tkinter
+import sys
 from tkinter import filedialog
 
-qualitree = ET.parse(filedialog.askopenfilename(filetypes=[("XML File", ".xml")], title="Select a QUALIFYING file"))
-qualiroot = qualitree.getroot()
-racetree = ET.parse(filedialog.askopenfilename(filetypes=[("XML File", ".xml")], title="Select a RACE file"))
-raceroot = racetree.getroot()
+tkroot = tkinter.Tk()
+tkroot.overrideredirect(True)
+tkroot.attributes("-alpha", 0)
+
+def getqualifile():
+    qualifile = filedialog.askopenfilename(filetypes=[("XML File", ".xml")], title="Select a QUALIFYING file")
+    if not qualifile:
+        sys.exit(2)
+    else:
+        qualitree = ET.parse(qualifile)
+        qualiroot = qualitree.getroot()
+        return qualiroot
+
+def getracefile():
+    racefile = filedialog.askopenfilename(filetypes=[("XML File", ".xml")], title="Select a RACE file")
+    if not racefile:
+        sys.exit(2)
+    else:
+        racetree = ET.parse(racefile)
+        raceroot = racetree.getroot()
+        return raceroot
 top10 = {}
 
+qualiroot = getqualifile()
+raceroot = getracefile()
 
 for driver in qualiroot.iter('Driver'):
     name = driver.find('Name')
